@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    
+</head>
+<body>
+<script>
+
+
+        
+function addSubject() {
+
+    let container = document.getElementById("subject-container");
+    let newRow = document.createElement("div");
+
+    newRow.className = "subject-row";
+    newRow.innerHTML = `
+        <input type="text" class="subject" oninput="this.value = this.value.replace(/[0-9]/g, '')" placeholder="Subject">
+        <input type="number" class="marks" placeholder="Marks" min="0" max="100">
+    `;
+    container.appendChild(newRow);
+}
+
+
+function calculateGrade() {
+
+    let studentName = document.getElementById("stu_name").value.trim();
+    let subjects = document.querySelectorAll(".subject");
+    let marks = document.querySelectorAll(".marks");
+    let total = 0;
+    let highest = -1;
+    let lowest = 101;
+    let highestSubject = "";
+    let lowestSubject = "";
+    let count = 0;
+
+    if (studentName === "") {
+        alert("Please enter student name");
+        return;
+    }
+
+    for (let i = 0; i < subjects.length; i++) {
+
+        let subjectName = subjects[i].value.trim();
+        let mark = marks[i].value;
+        if (subjectName === "" || mark === "") {
+            alert("Please enter all subject names and marks");
+            return;
+        }
+        mark = Number(mark);
+        if (mark < 0 || mark > 100) {
+            alert("Marks should be between 0 and 100");
+            return;
+        }
+        total = total + mark;
+        count++;
+        if (mark > highest) {
+            highest = mark;
+            highestSubject = subjectName;
+        }
+        if (mark < lowest) {
+            lowest = mark;
+            lowestSubject = subjectName;
+        }
+    }
+
+    let average = total/count;
+    let grade;
+    if (average >= 85) {
+        grade = "A";
+    }
+    else if (average >= 75) {
+        grade = "B";
+    }
+    else if (average >= 60) {
+        grade = "C";
+    }
+    else {
+        grade = "F";
+    }
+
+    document.getElementById("grade").innerText = grade;
+    document.getElementById("average").innerText = average.toFixed(1);
+    document.getElementById("highest").innerText =
+        highest + " (" + highestSubject + ")";
+
+    document.getElementById("lowest").innerText =
+        lowest + " (" + lowestSubject + ")";
+
+    document.getElementById("total").innerText =
+        total + " / " + (count * 100);
+
+    document.getElementById("message").innerText =
+        grade === "A" ? "Great job! Score above 85 earns an A grade." :
+        grade === "B" ? "Good job! Keep improving." :
+        grade === "C" ? "You passed! Keep practising." :
+        "Keep working hard. You can improve!";
+}
+
+</script>
+
+    <div class="container">
+
+        <div class="calculator">
+
+            <header class="head-section">
+                <p>PRACTICE TASK REFERENCE</p>
+                <h2>Grade Calculator</h2>
+            </header>
+
+            <div class="main-section">
+
+            <div class="input-section">
+
+                <label>Student Name</label>
+                <input type="text" id="stu_name" oninput="this.value = this.value.replace(/[0-9]/g, '')" placeholder="Enter student name">
+
+                <label>Subjects & Marks</label>
+
+                    <div id="subject-container">
+
+                    <div class="subject-row">
+                            <input type="text" id='noNumbers' oninput="this.value = this.value.replace(/[0-9]/g, '')" class="subject" placeholder="Subject1">
+                            <input type="number" class="marks" placeholder="Marks" min="0" max="100">
+                    </div>
+
+                    <div class="subject-row">
+                            <input type="text" id='noNumbers' oninput="this.value = this.value.replace(/[0-9]/g, '')" class="subject" placeholder="Subject2">
+                            <input type="number" class="marks" placeholder="Marks" min="0" max="100">
+                    </div>
+
+                    <div class="subject-row">
+                            <input type="text" id='noNumbers' oninput="this.value = this.value.replace(/[0-9]/g, '')"class="subject" placeholder="Subject3">
+                            <input type="number" class="marks" placeholder="Marks" min="0" max="100">
+                    </div>
+
+                    </div>
+
+                    <button class="add-btn" onclick="addSubject()">
+                        Add subject
+                    </button>
+
+                    <button class="calculate-btn" onclick="calculateGrade()">
+                        Calculate Grade
+                    </button>
+
+                </div>
+
+                <div class="result-section">
+
+                    <div id="grade"></div>
+
+                    <p class="average-label">AVERAGE SCORE</p>
+
+                    <h2 id="average">0.0</h2>
+
+                    <hr>
+
+                    <div class="result-row">
+                        <span>Highest</span>
+                        <strong id="highest"></strong>
+                    </div>
+
+                    <div class="result-row">
+                        <span>Lowest</span>
+                        <strong id="lowest"></strong>
+                    </div>
+
+                    <div class="result-row">
+                        <span>Total</span>
+                        <strong id="total">0 / 0</strong>
+                    </div>
+
+                    <p class="message" id="message">
+                        ---
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+<style>
+    
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    padding: 20px;
+    color: #172033;
+}
+
+.container {
+    max-width: 575px;
+    margin: auto;
+    background-color:none;
+    padding: 28px;
+}
+
+.calculator {
+    background-color: white;
+    border-radius: 13px;
+    box-shadow: 3px;
+    overflow: hidden;
+}
+
+.head-section {
+    padding: 20px;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.head-section p {
+    color: #7938f5;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.head-section h2 {
+    font-size: 17px;
+}
+
+.main-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 20px;
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 10px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+    margin-top: 2px;
+}
+
+input {
+    width: 100%;
+    padding: 9px;
+    border: 1px solid #dfe5ee;
+    border-radius: 7px;
+    outline: none;
+    font-size: 11px;
+    color: black;
+}
+
+input:focus {
+    border-color: #8038f5;
+}
+
+#stu_name {
+    margin-bottom: 12px;
+}
+
+.subject-row {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 7px;
+}
+
+.subject {
+    flex: 2;
+    min-width: 0;
+}
+
+.marks {
+    flex: 1;
+    min-width: 0;
+}
+
+.add-btn {
+    background: white;
+    color: black;
+    border: 1px solid #dfe5ee;
+    padding: 8px;
+    border-radius: 7px;
+    text-align: left;
+    font-size: 11px;
+    cursor: pointer;
+    margin-top: 1px;
+}
+
+.add-btn:hover {
+    background: #f8f4ff;
+    color: #7938f5;
+}
+
+.calculate-btn {
+    background-color: #7938ed;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 11px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 11px;
+}
+
+.calculate-btn:hover {
+    background-color: #6124d2;
+}
+
+.result-section {
+    background-color: white;
+    border: 1px solid #ead6ff;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    align-self: start;
+}
+
+
+.average-label {
+    font-size: 9px;
+    color: black;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.result-section h2 {
+    font-size: 16px;
+    margin: 3px 0 12px;
+}
+
+.result-section hr {
+    border: none;
+    border-top: 1px solid #ead6ff;
+    margin-bottom: 12px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    margin-bottom: 8px;
+    color: black;
+}
+
+.result-row strong {
+    color: black;
+}
+
+.message {
+    background-color: white;
+    color: black;
+    font-size: 9px;
+    padding: 9px 5px;
+    border-radius: 6px;
+    margin-top: 12px;
+}
+
+@media (max-width: 550px) {
+    .main-section {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .result-section {
+        width: 100%;
+    }
+}
+
+</style>
+</html>
